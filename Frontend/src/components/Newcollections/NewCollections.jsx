@@ -28,7 +28,7 @@ const NewCollections = () => {
       <div className="collections">
         {new_collection.map((item, i) => (
           <Item
-            key={item.id || i} // Use unique `id` if available
+            key={item.id || i}
             id={item.id}
             name={item.name}
             image={item.image}

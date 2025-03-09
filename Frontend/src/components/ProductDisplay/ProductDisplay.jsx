@@ -4,8 +4,7 @@ import star_icon from "../assets/star_icon.png";
 import star_dull_icon from "../assets/star_dull_icon.png";
 import { ShopContext } from "../../context/ShopContext";
 
-const ProductDisplay = (props) => {
-  const { product } = props;
+const ProductDisplay = ({ product }) => {
   const { addToCart } = useContext(ShopContext);
   return (
     <div className="productdisplay">
@@ -34,10 +33,10 @@ const ProductDisplay = (props) => {
         </div>
         <div className="productdisplay-right-prices">
           <div className="productdisplay-right-price-old">
-            ${product.old_price}
+            Rs {product.old_price}
           </div>
           <div className="productdisplay-right-price-new">
-            ${product.new_price}
+            Rs {product.new_price}
           </div>
         </div>
         <div className="productdisply-right-description">

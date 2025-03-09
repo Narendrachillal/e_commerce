@@ -2,24 +2,24 @@ import React from "react";
 import "./Item.css";
 import { Link } from "react-router-dom";
 
-const Item = (props) => {
+const Item = ({ id, image, name, new_price, old_price }) => {
   return (
     <div className="item">
-      <Link to={`/product/${props.id}`}>
+      <Link to={`/product/${id}`}>
         <img
           onClick={window.scrollTo({
             top: 0,
             left: 0,
             behavior: "smooth",
           })}
-          src={props.image}
+          src={image}
           alt=""
         />
       </Link>
-      <p>{props.name}</p>
+      <p>{name}</p>
       <div className="item-prices">
-        <div className="item-price-new">Rs {props.new_price}</div>
-        <div className="item-price-old">Rs {props.old_price}</div>
+        <div className="item-price-new">Rs {new_price}</div>
+        <div className="item-price-old">Rs {old_price}</div>
       </div>
     </div>
   );

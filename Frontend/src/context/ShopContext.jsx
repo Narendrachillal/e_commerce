@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
+import API from "../utils/endPoints.js";
 
 export const ShopContext = createContext(null);
 
@@ -13,34 +14,25 @@ const getDefaultCart = () => {
 const ShopContextProvider = (props) => {
   const [all_product, setAll_Product] = useState([]);
   const [cartItems, setCartItems] = useState(getDefaultCart());
-  console.log(all_product);
-
-  // useEffect(() => {
-  //   fetch("http://localhost:4000/products/allproducts")
-  //     .then((res) => res.json())
-  //     .then((data) => setAll_Product(data));
-  // }, []);
 
   useEffect(() => {
-    fetch("http://localhost:4000/products/allproducts")
+    fetch(API.allproducts)
       .then((res) => res.json())
       .then((data) => {
-        console.log("Fetched Products:", data); // Debugging
         setAll_Product(data);
       })
       .catch((error) => console.error("Error fetching products:", error));
 
     //getCartData
     const token = localStorage.getItem("auth-token");
-    console.log("Auth Token:", token); // log token to ensure it's present
 
     if (token) {
-      fetch("http://localhost:4000/products/getcart", {
+      fetch(API.getCart, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          "auth-token": token, //  Ensure token is correctly set
+          "auth-token": token,
         },
         body: "",
       })
@@ -49,21 +41,23 @@ const ShopContextProvider = (props) => {
     }
   }, []);
 
- 
   const addToCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 0) + 1 }));
-    console.log("Updated Cart Items:", cartItems);
 
     const token = localStorage.getItem("auth-token");
-    console.log("Auth Token:", token); // log token to ensure it's present
+    if (!token) {
+      console.error("No auth token found in localStorage!");
+      alert("  Please log in to add items to cart.");
+      return;
+    }
 
     if (token) {
-      fetch("http://localhost:4000/products/addtocart", {
+      fetch(API.addToCart, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          "auth-token": token, //  Ensure token is correctly set
+          "auth-token": token,
         },
         body: JSON.stringify({ itemId }),
       })
@@ -81,15 +75,14 @@ const ShopContextProvider = (props) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
 
     const token = localStorage.getItem("auth-token");
-    console.log("Auth Token:", token);
 
     if (token) {
-      fetch("http://localhost:4000/products/removefromcart", {
+      fetch(API.removeFromCart, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          "auth-token": token, //  Ensure token is correctly set
+          "auth-token": token,
         },
         body: JSON.stringify({ itemId }),
       })
@@ -99,31 +92,22 @@ const ShopContextProvider = (props) => {
     }
   };
 
-  const getTotalCartAmount = () => {
-    let totalAmount = 0;
-    for (const item in cartItems) {
-      if (cartItems[item] > 0) {
-        let itemInfo = all_product?.find(
-          (product) => product?.id === Number(item)
+  const getTotalCartAmount = () =>
+    Object.entries(cartItems).reduce((total, [itemId, qty]) => {
+      if (qty > 0) {
+        const itemInfo = all_product.find(
+          (product) => product.id === Number(itemId)
         );
+        return itemInfo?.new_price ? total + itemInfo.new_price * qty : total;
+      }
+      return total;
+    }, 0);
 
-        if (itemInfo && itemInfo.new_price) {
-          // Ensure itemInfo exists
-          totalAmount += itemInfo?.new_price * cartItems[item];
-        }
-      }
-    }
-    return totalAmount;
-  };
-  const getTotalCartItems = () => {
-    let total = 0;
-    for (const item in cartItems) {
-      if (cartItems[item] > 0) {
-        total += cartItems[item];
-      }
-    }
-    return total;
-  };
+  const getTotalCartItems = () =>
+    Object.values(cartItems).reduce(
+      (total, qty) => total + (qty > 0 ? qty : 0),
+      0
+    );
 
   const contextValue = {
     cartItems,

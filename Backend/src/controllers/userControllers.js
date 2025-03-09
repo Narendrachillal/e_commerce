@@ -6,7 +6,6 @@ export const userRegister = async (req, res) => {
   try {
     const { email, username, password } = req.body;
 
-    // Check if the user already exists
     let check = await User.findOne({ email });
     if (check) {
       return res.status(400).json({
@@ -24,16 +23,13 @@ export const userRegister = async (req, res) => {
       cart[i] = 0;
     }
 
-    // Create new user
-    const user = new User({
+    const user = await User.create({
       name: username,
       email,
-      password: hashedPassword, // Store hashed password
+      password: hashedPassword,
       cartData: cart,
     });
-    await user.save();
 
-    // Generate JWT token
     const payload = {
       user: {
         id: user.id,
@@ -57,8 +53,6 @@ export const userRegister = async (req, res) => {
 export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Check if the user exists
     let user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({
@@ -67,8 +61,7 @@ export const userLogin = async (req, res) => {
       });
     }
 
-    // Compare hashed password
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({
         success: false,
@@ -84,9 +77,8 @@ export const userLogin = async (req, res) => {
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET || "secret_ecom", {
-      expiresIn: "7d", // Token expiry (7 days)
+      expiresIn: "7d",
     });
-    console.log("token", token);
     res.json({ success: true, token });
   } catch (error) {
     console.error("Error in userLogin:", error);

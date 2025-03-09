@@ -49,7 +49,6 @@ export const getNewCollections = async (req, res) => {
       .sort({ createdAt: -1 }) // Fetch latest products first
       .limit(8); // Get only the last 8 products
 
-    // console.log("New collection fetched successfully");
     res.status(200).json(newCollections);
   } catch (error) {
     console.error("Error fetching new collections:", error);
@@ -65,14 +64,11 @@ export const getpopularinwomen = async (req, res) => {
   try {
     let products = await Product.find({ category: "women" });
     let popular_in_women = products.slice(0, 4);
-    // console.log(popular_in_women, "popular in women fethced");
     res.send(popular_in_women);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch populars in women" });
   }
 };
-
-//creating middlerware to fetch user
 
 //add to cart
 export const addToCart = async (req, res) => {
@@ -106,7 +102,6 @@ export const removeFromCart = async (req, res) => {
 };
 export const getCart = async (req, res) => {
   try {
-    console.log("getcart");
     let userData = await User.findOne({ _id: req.user.id });
     res.json(userData.cartData);
   } catch (error) {

@@ -4,8 +4,13 @@ import { ShopContext } from "../../context/ShopContext";
 import remove_icon from "../assets/cart_cross_icon.png";
 
 const CartItems = () => {
-  const { all_product, cartItems, removeFromCart, getTotalCartAmount } =
-    useContext(ShopContext);
+  const {
+    all_product,
+    cartItems,
+    removeFromCart,
+    getTotalCartAmount,
+    addToCart,
+  } = useContext(ShopContext);
   return (
     <div className="cartitems">
       <div className="cartitems-format-main">
@@ -17,23 +22,47 @@ const CartItems = () => {
         <p>Remove</p>
       </div>
       <hr />
-      {all_product.map((e) => {
-        if (cartItems[e.id] > 0) {
+      {all_product.map((item) => {
+        if (cartItems[item.id] > 0) {
           return (
-            <div key={e.id}>
+            <div key={item.id}>
               <div className="cartitems-format cartitems-format-main">
-                <img src={e.image} alt="" className="carticon-product-icon" />
-                <p>{e.name}</p>
-                <p>${e.new_price ? e.new_price : "N/A"}</p>
-                <button className="cartitems-quantity">
-                  {cartItems[e.id]}
-                </button>
-                <p>${e.new_price ? e.new_price * cartItems[e.id] : 0}</p>
+                <img
+                  src={item.image}
+                  alt=""
+                  className="carticon-product-icon"
+                />
+                <p>{item.name}</p>
+                <p>Rs {item.new_price ? item.new_price : "N/A"}</p>
+                <div className="cartitems-quantity-main">
+                  <span
+                    onClick={() => {
+                      removeFromCart(item.id);
+                    }}
+                  >
+                    -
+                  </span>
+
+                  <span className="cartitems-quantity">
+                    {cartItems[item.id]}
+                  </span>
+
+                  <span
+                    onClick={() => {
+                      addToCart(item.id);
+                    }}
+                  >
+                    +
+                  </span>
+                </div>
+                <p>
+                  Rs {item.new_price ? item.new_price * cartItems[item.id] : 0}
+                </p>
                 <img
                   className="cartitems-remove-icon"
                   src={remove_icon}
                   onClick={() => {
-                    removeFromCart(e.id);
+                    removeFromCart(item.id);
                   }}
                   alt=""
                 />

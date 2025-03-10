@@ -28,11 +28,19 @@
   margin: 0px 40px;
   cursor: pointer;
 }
-.cartitems-quantity {
+.cartitems-quantity-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 60px;
   height: 46px;
-  border: 2px solid #ebebeb;
   background: #fff;
+}
+.cartitems-quantity-main span {
+  cursor: pointer;
+}
+.cartitems-quantity {
+  border: none;
 }
 .cartitems-down {
   display: flex;

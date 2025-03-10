@@ -10,7 +10,7 @@ const Footer = () => {
     <div className="footer">
       <div className="footer-logo">
         <img src={footer_logo} alt="" />
-        <p>SHOPPY</p>
+        <p>SHOPPER</p>
       </div>
       <ul className="footer-links">
         <li>Company</li>
@@ -24,10 +24,10 @@ const Footer = () => {
           <img src={instagram_icon} alt="IN" />
         </div>
         <div className="footer-icons-container">
-          <img src={pintester_icon} alt="IN" />
+          <img src={pintester_icon} alt="PN" />
         </div>
         <div className="footer-icons-container">
-          <img src={whatsapp_icon} alt="IN" />
+          <img src={whatsapp_icon} alt="WA" />
         </div>
       </div>
       <div className="footer-copyright">

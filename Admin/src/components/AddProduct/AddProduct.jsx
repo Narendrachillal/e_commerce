@@ -2,6 +2,7 @@ import axios from "axios";
 import "./AddProduct.css";
 import upload_area from "../../assets/upload_area.svg";
 import baseURL from "../../utils/endPoints";
+import { useState } from "react";
 
 const AddProduct = () => {
   const [image, setImage] = useState(null);

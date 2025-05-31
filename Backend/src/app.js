@@ -12,6 +12,7 @@ const app = express();
 app.use(express.json());
 const allowedOrigins = [
   "https://e-commerce-ui-z9gq.onrender.com",
+  "https://shopper-admin-engw.onrender.com",
   "http://localhost:5173",
   "http://localhost:5174",
 ];
@@ -36,5 +37,11 @@ connectDB();
 app.use("/", uploadRoutes);
 app.use("/products", productRoutes);
 app.use("/user", userRouter);
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
 
 export default app;

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
 import axios from "axios";
 import "./AddProduct.css";
 import upload_area from "../../assets/upload_area.svg";
+import baseURL from "../../utils/endPoints";
 
 const AddProduct = () => {
   const [image, setImage] = useState(null);
@@ -31,15 +31,11 @@ const AddProduct = () => {
       const formData = new FormData();
       formData.append("product", image);
 
-      const uploadResponse = await axios.post(
-        "http://localhost:4000/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const uploadResponse = await axios.post(`${baseURL}upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (uploadResponse.data.success) {
         const product = {
@@ -48,7 +44,7 @@ const AddProduct = () => {
         };
 
         const response = await axios.post(
-          "http://localhost:4000/products/addproduct",
+          `${baseURL}products/addproduct`,
           product,
           {
             headers: {

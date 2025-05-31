@@ -2,15 +2,14 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import "./ListProduct.css";
 import cross_icon from "../../assets/cross_icon.png";
+import baseURL from "../../utils/endPoints";
 
 const ListProduct = () => {
   const [allProducts, setAllProducts] = useState([]);
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:4000/products/allproducts"
-      );
+      const response = await axios.get(`${baseURL}products/allproducts`);
       setAllProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -23,7 +22,7 @@ const ListProduct = () => {
 
   const removeProduct = async (id) => {
     try {
-      await axios.post("http://localhost:4000/products/removeproduct", { id });
+      await axios.post(`${baseURL}products/removeproduct`, { id });
       setAllProducts((prevProducts) => prevProducts.filter((p) => p.id !== id));
     } catch (error) {
       console.error("Error removing product:", error);

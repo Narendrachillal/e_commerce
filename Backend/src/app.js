@@ -10,7 +10,11 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+const allowedOrigins = [
+  "https://e-commerce-ui-z9gq.onrender.com",
+  "http://localhost:5173",
+  "http://localhost:5174",
+];
 
 app.use(
   cors({
@@ -22,7 +26,7 @@ app.use(
       }
     },
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "auth-token", "Authorization"], //  Added "auth-token"
+    allowedHeaders: ["Content-Type", "auth-token", "Authorization"],
   })
 );
 

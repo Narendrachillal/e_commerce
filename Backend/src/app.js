@@ -33,6 +33,4 @@ app.use("/", uploadRoutes);
 app.use("/products", productRoutes);
 app.use("/user", userRouter);
 
-// app.get("/", (req, res) => res.send("E-commerce API is running"));
-
 export default app;

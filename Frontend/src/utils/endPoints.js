@@ -1,4 +1,4 @@
-const baseURL = "http://localhost:4000/products/";
+const baseURL = "import.meta.env.VITE_API_URL";
 const API = {
   allproducts: `${baseURL}allproducts`,
   getCart: `${baseURL}getcart`,
